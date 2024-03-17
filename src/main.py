@@ -1,5 +1,5 @@
 from classes import HH_api_db
-from config import config
+from configs.config import config
 from DB_manager import DBManager
 from utils import create_database, create_table, employers_to_db, vacancies_to_db
 

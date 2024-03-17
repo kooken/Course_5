@@ -1,7 +1,5 @@
 import psycopg2
-from config import config
-from classes import HH_api_db
-
+from configs.config import config
 
 params_db = config()
 

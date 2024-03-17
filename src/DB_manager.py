@@ -1,5 +1,5 @@
 import psycopg2
-from config import config
+from configs.config import config
 
 params_db = config()
 
