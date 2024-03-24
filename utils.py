@@ -6,15 +6,13 @@ params_db = config()
 
 def create_database(database_name, params_db):
 
-    conn = psycopg2.connect(dbname='HH_parser', **params_db)
+    conn = psycopg2.connect(dbname='postgres', **params_db)
     conn.autocommit = True
     cur = conn.cursor()
-    try:
-        cur.execute(f'DROP DATABASE {database_name}')
-    except psycopg2.errors.InvalidCatalogName:
-        print('База данных не существует')
 
-        cur.execute(f'CREATE DATABASE {database_name}')
+    cur.execute(f'DROP DATABASE IF EXISTS {database_name}')
+
+    cur.execute(f'CREATE DATABASE {database_name}')
 
     cur.close()
     conn.close()
@@ -22,7 +20,7 @@ def create_database(database_name, params_db):
 
 def create_table(params):
 
-    conn = psycopg2.connect(dbname='HH_parser', **params)
+    conn = psycopg2.connect(dbname='postgres', **params)
     with conn.cursor() as cur:
         cur.execute("""
             CREATE TABLE companies (
@@ -43,28 +41,5 @@ def create_table(params):
                 )
                 """)
 
-    conn.commit()
-    conn.close()
-
-
-def employers_to_db(self):
-    with psycopg2.connect(dbname='HH_parser', **params_db) as conn:
-        with conn.cursor() as cur:
-            for employer in self.employers_dict:
-                cur.execute(
-                    f"INSERT INTO companies values ('{int(self.employers_dict[employer])}', '{employer}')")
-
-    conn.commit()
-    conn.close()
-
-
-def vacancies_to_db(self):
-    with psycopg2.connect(dbname='HH_parser', **params_db) as conn:
-        with conn.cursor() as cur:
-            for vacancy in self.get_vacancies():
-                cur.execute(
-                    f"INSERT INTO vacancies(vacancy_name, salary, company_name, vacancy_url) values "
-                    f"('{vacancy['vacancy_name']}', '{int(vacancy['salary'])}', "
-                    f"'{vacancy['employer']}', '{vacancy['url']}')")
     conn.commit()
     conn.close()

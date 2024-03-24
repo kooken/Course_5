@@ -1,7 +1,8 @@
 from classes import HH_api_db
 from configs.config import config
 from DB_manager import DBManager
-from utils import create_database, create_table, employers_to_db, vacancies_to_db
+from utils import (create_database, create_table,
+                   employers_to_db, vacancies_to_db)
 
 
 def main():
@@ -9,8 +10,8 @@ def main():
     create_database('HH_parser', params_db)
     create_table(params_db)
     db_vacancies = HH_api_db()
-    employers_list = employers_to_db(db_vacancies)
-    vacancies_list = vacancies_to_db(db_vacancies)
+    employers_list = db_vacancies.list_employers
+    vacancies_list = db_vacancies.get_vacancies()
     while True:
         task = input(
             "Введите 1, чтобы получить список всех компаний и количество вакансий у каждой компании\n"

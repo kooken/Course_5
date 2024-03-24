@@ -18,7 +18,6 @@ class HH_api_db:
 
     @staticmethod
     def get_request(employer_id) -> dict:
-        """Запрос списка работодателей, при наличии вакансий и заработной платы"""
         params = {
             "page": 1,
             "per_page": 100,
@@ -43,7 +42,3 @@ class HH_api_db:
                     {'url': vacancy['alternate_url'], 'salary': salary,
                      'vacancy_name': vacancy['name'], 'employer': employer})
         return vacancies_list
-
-
-vacs=HH_api_db()
-print(vacs.get_vacancies())
