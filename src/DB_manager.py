@@ -8,7 +8,8 @@ class DBManager:
     def __init__(self):
         self.params_db = config()
 
-    def get_companies_and_vacancies_count(self):
+    @classmethod
+    def get_companies_and_vacancies_count(cls):
         with psycopg2.connect(dbname='postgres', **params_db) as conn:
             with conn.cursor() as cur:
                 cur.execute('SELECT company_name, COUNT(vacancy_name) '
@@ -18,7 +19,8 @@ class DBManager:
         conn.close()
         return answer
 
-    def get_all_vacancies(self):
+    @classmethod
+    def get_all_vacancies(cls):
         with psycopg2.connect(dbname='postgres', **params_db) as conn:
             with conn.cursor() as cur:
                 cur.execute('SELECT * '
@@ -27,7 +29,8 @@ class DBManager:
         conn.close()
         return answer
 
-    def get_avg_salary(self):
+    @classmethod
+    def get_avg_salary(cls):
         with psycopg2.connect(dbname='postgres', **params_db) as conn:
             with conn.cursor() as cur:
                 cur.execute('SELECT AVG(salary) '
@@ -36,8 +39,8 @@ class DBManager:
         conn.close()
         return answer
 
-    def get_vacancies_with_higher_salary(self):
-        """Получает список всех вакансий, у которых зарплата выше средней по всем вакансиям"""
+    @classmethod
+    def get_vacancies_with_higher_salary(cls):
         with psycopg2.connect(dbname='postgres', **params_db) as conn:
             with conn.cursor() as cur:
                 cur.execute('SELECT vacancy_name '
@@ -47,8 +50,8 @@ class DBManager:
         conn.close()
         return answer
 
-    def get_vacancies_with_keyword(self, keyword):
-        """Получает список всех вакансий, в названии которых содержатся переданные в метод слова"""
+    @classmethod
+    def get_vacancies_with_keyword(cls, keyword):
         with psycopg2.connect(dbname='postgres', **params_db) as conn:
             with conn.cursor() as cur:
                 cur.execute(f"SELECT vacancy_name "
@@ -58,8 +61,9 @@ class DBManager:
         conn.close()
         return answer
 
-    def save_to_database(self, database_name, list_employers, list_vacancies):
-        with psycopg2.connect(dbname='postgres', **self.params_db) as conn:
+    @classmethod
+    def save_to_database(cls, list_employers, list_vacancies):
+        with psycopg2.connect(dbname='postgres', **params_db) as conn:
             with conn.cursor() as cur:
                 for employer in list_employers:
                     cur.execute(
