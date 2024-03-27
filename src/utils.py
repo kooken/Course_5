@@ -18,9 +18,9 @@ def create_database(database_name, params_db):
     conn.close()
 
 
-def create_table(params):
+def create_table(dbname, params):
+    conn = psycopg2.connect(dbname=dbname, **params)
 
-    conn = psycopg2.connect(dbname='postgres', **params)
     with conn.cursor() as cur:
         cur.execute("""
             CREATE TABLE companies (
