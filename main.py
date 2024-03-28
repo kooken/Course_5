@@ -6,14 +6,14 @@ from src.utils import create_database, create_table
 
 def main():
     params_db = config()
-    create_database('postgres', params_db)
-    create_table('postgres', params_db)
+    create_database('hh_db', params_db)
+    create_table('hh_db', params_db)
 
     initial_info = HH_api_db()
     all_employers = initial_info.list_employers
     all_vacancies = initial_info.get_vacancies()
 
-    database_final = DBManager
+    database_final = DBManager('hh_db')
     database_final.save_to_database(all_employers, all_vacancies)
 
     while True:
@@ -30,20 +30,20 @@ def main():
         if task == "Стоп":
             break
         elif task == '1':
-            print(DBManager.get_companies_and_vacancies_count())
+            print(database_final.get_companies_and_vacancies_count())
             print()
         elif task == '2':
-            print(DBManager.get_all_vacancies())
+            print(database_final.get_all_vacancies())
             print()
         elif task == '3':
-            print(DBManager.get_avg_salary())
+            print(database_final.get_avg_salary())
             print()
         elif task == '4':
-            print(DBManager.get_vacancies_with_higher_salary())
+            print(database_final.get_vacancies_with_higher_salary())
             print()
         elif task == '5':
             keyword = input('Введите ключевое слово: ')
-            print(DBManager.get_vacancies_with_keyword(keyword))
+            print(database_final.get_vacancies_with_keyword(keyword))
             print()
         else:
             print('Неправильный запрос')

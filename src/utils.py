@@ -24,9 +24,8 @@ def create_table(dbname, params):
     with conn.cursor() as cur:
         cur.execute("""
             CREATE TABLE companies (
-            company_id int primary key,
+            company_id serial primary key,
             company_name varchar unique not null,
-            foreign key(company_name) references companies(company_name)
             )
             """)
 
@@ -37,7 +36,9 @@ def create_table(dbname, params):
                 vacancy_name text not null,
                 salary int,
                 company_name text not null,
-                vacancy_url varchar not null
+                vacancy_url varchar not null,
+                company_id serial,
+                foreign key(company_id) references companies(company_id)
                 )
                 """)
 
