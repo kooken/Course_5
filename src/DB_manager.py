@@ -13,8 +13,9 @@ class DBManager:
         with psycopg2.connect(dbname=self.db_name, **params_db) as conn:
             with conn.cursor() as cur:
                 cur.execute('SELECT company_name, COUNT(vacancy_name) '
-                            'FROM vacancies '
-                            'GROUP BY company_name')
+                            'FROM companies '
+                            'INNER JOIN vacancies USING (company_id)'
+                            'GROUP BY company_id')
                 answer = cur.fetchall()
         conn.close()
         return answer
@@ -64,11 +65,16 @@ class DBManager:
                     cur.execute(
                         f"INSERT INTO companies(company_name) "
                         f"VALUES ('{employer}')")
+                    conn.commit()
                 for vacancy in list_vacancies:
                     cur.execute(
-                        f"INSERT INTO vacancies(vacancy_name, salary, company_name, vacancy_url) "
+                        "SELECT company_id FROM companies "
+                        f"WHERE company_name = '{vacancy['employer']}'")
+                    emp_id = cur.fetchone()[0]
+                    cur.execute(
+                        f"INSERT INTO vacancies(vacancy_name, salary, vacancy_url, company_id) "
                         f"VALUES"
                         f"('{vacancy['vacancy_name']}', '{int(vacancy['salary'])}', "
-                        f"'{vacancy['employer']}', '{vacancy['url']}')")
+                        f"'{vacancy['url']}', {emp_id})")
 
         conn.close()

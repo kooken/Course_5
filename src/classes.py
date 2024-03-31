@@ -29,7 +29,6 @@ class HH_api_db:
         return requests.get("https://api.hh.ru/vacancies/", params=params).json()['items']
 
     def get_vacancies(self):
-        """Получение списка работодателей"""
         vacancies_list = []
         for employer in self.list_employers:
             emp_vacancies = self.get_request(self.list_employers[employer])
