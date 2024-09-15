@@ -1,6 +1,6 @@
 from configs.config import config
 from src.DB_manager import DBManager
-from src.classes import HH_api_db
+from src.classes import HHApiDb
 from src.utils import create_database, create_table
 
 
@@ -9,7 +9,7 @@ def main():
     create_database('hh_db', params_db)
     create_table('hh_db', params_db)
 
-    initial_info = HH_api_db()
+    initial_info = HHApiDb()
     all_employers = initial_info.list_employers
     all_vacancies = initial_info.get_vacancies()
 
@@ -18,16 +18,16 @@ def main():
 
     while True:
         task = input(
-            "Введите 1, чтобы получить список всех компаний и количество вакансий у каждой компании\n"
-            "Введите 2, чтобы получить список всех вакансий с указанием названия компании, "
-            "названия вакансии и зарплаты и ссылки на вакансию\n"
-            "Введите 3, чтобы получить среднюю зарплату по вакансиям\n"
-            "Введите 4, чтобы получить список всех вакансий, у которых зарплата выше средней по всем вакансиям\n"
-            "Введите 5, чтобы получить список всех вакансий, в названии которых содержатся переданные в метод слова\n"
-            "Введите Стоп, чтобы завершить работу\n"
+            "Enter 1 to get a list of all companies and the number of vacancies for each company\n"
+            "Enter 2 to get a list of all vacancies with the company name, "
+            "job title and salary, and links to the vacancy\n"
+            "Enter 3 to get the average salary for vacancies\n"
+            "Enter 4 to get a list of all vacancies with a salary higher than the average for all vacancies\n"
+            "Enter 5 to get a list of all vacancies whose title contains the words passed to the method\n"
+            "Enter Stop to terminate\n"
         )
 
-        if task == "Стоп":
+        if task == "Stop":
             break
         elif task == '1':
             print(database_final.get_companies_and_vacancies_count())
@@ -42,11 +42,11 @@ def main():
             print(database_final.get_vacancies_with_higher_salary())
             print()
         elif task == '5':
-            keyword = input('Введите ключевое слово: ')
+            keyword = input('Enter keyword: ')
             print(database_final.get_vacancies_with_keyword(keyword))
             print()
         else:
-            print('Неправильный запрос')
+            print('Incorrect query')
 
 
 if __name__ == '__main__':
